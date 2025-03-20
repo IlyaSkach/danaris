@@ -26,4 +26,48 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // Добавляем обработчики для всех логотипов
+  const brandImages = document.querySelectorAll(".brands-slide img");
+
+  brandImages.forEach((img) => {
+    img.addEventListener("click", function () {
+      // Получаем название бренда из alt атрибута
+      const brandName = this.alt;
+
+      // Обновляем первый вопрос в квизе
+      questions[0] = {
+        text: `Вас интересует оборудование ${brandName}?`,
+        options: ["Да", "Нет, другой производитель", "Нужна консультация"],
+      };
+
+      // Открываем модальное окно с квизом
+      openQuizModal();
+    });
+  });
 });
+
+// Обновляем функцию startQuiz
+function startQuiz() {
+  const chat = document.querySelector(".chat");
+
+  setTimeout(() => {
+    const questionElement = document.createElement("div");
+    questionElement.classList.add("chat-message", "operator");
+    questionElement.innerHTML = `
+      <div class="avatar operator-avatar">
+        <img src="./assets/olga.gif" alt="avatar">
+      </div>
+      <div class="message">${questions[0].text}</div>
+      <div class="options">
+        ${questions[0].options
+          .map(
+            (option) =>
+              `<button class="option" onclick="nextQuestion(1, '${option}')">${option}</button>`
+          )
+          .join("")}
+      </div>
+    `;
+    chat.appendChild(questionElement);
+  }, 1000);
+}

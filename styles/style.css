@@ -28,40 +28,17 @@ h1 {
 }
 
 .brands-carousel {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-  backdrop-filter: blur(4px);
-  padding: 20px 0;
-  margin: 30px 0;
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  margin: 20px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .brands-row {
   width: 100%;
   overflow: hidden;
-  padding: 25px 0;
-  position: relative;
-}
-
-.brands-row::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 0) 5%,
-    rgba(255, 255, 255, 0) 95%,
-    rgba(255, 255, 255, 0.8) 100%
-  );
-  pointer-events: none;
-  z-index: 1;
+  padding: 20px 0;
 }
 
 .brands-track {
@@ -78,18 +55,10 @@ h1 {
   height: 60px;
   object-fit: contain;
   transition: all 0.3s ease;
-  padding: 8px;
+  cursor: pointer;
+  padding: 5px;
   border: 2px solid transparent;
   border-radius: 8px;
-  cursor: pointer;
-}
-
-.brands-slide img:hover {
-  transform: scale(1.1);
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-  border-color: #4a90e2;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 15px rgba(74, 144, 226, 0.2);
 }
 
 /* Добавим анимацию свечения для рамки */
@@ -113,109 +82,121 @@ h1 {
   animation: borderGlow 2s infinite;
 }
 
-/* Анимация для движения слева направо */
-.track-left {
-  animation: scrollLeft 25s linear infinite;
-}
-
-/* Анимация для движения справа налево */
-.track-right {
-  animation: scrollRight 25s linear infinite;
-}
-
-@keyframes scrollLeft {
-  0% {
-    transform: translateX(0);
+/* Анимации для десктопа (горизонтальные) */
+@media screen and (min-width: 769px) {
+  .track-left {
+    animation: scrollLeft 25s linear infinite;
   }
-  100% {
-    transform: translateX(-50%);
-  }
-}
 
-@keyframes scrollRight {
-  0% {
-    transform: translateX(-50%);
+  .track-right {
+    animation: scrollRight 25s linear infinite;
   }
-  100% {
-    transform: translateX(0);
-  }
-}
 
-/* Эффект паузы при наведении */
-.brands-track:hover {
-  animation-play-state: paused;
+  @keyframes scrollLeft {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes scrollRight {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 }
 
 /* Медиа-запросы для мобильной версии */
 @media screen and (max-width: 768px) {
-  .container {
-    padding: 0 10px;
-  }
-
-  h1 {
-    font-size: 28px;
+  .brands-carousel {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Два столбца */
+    gap: 20px;
+    padding: 15px;
   }
 
   .brands-row {
-    padding: 10px 0;
+    height: 300px;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .brands-track {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   .brands-slide {
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
   }
 
   .brands-slide img {
-    height: 40px; /* Уменьшаем размер логотипов */
+    height: auto;
+    width: 100%;
+    max-width: 80px;
+    padding: 5px;
   }
 
-  /* Ускоряем анимацию для мобильных устройств */
+  /* Вертикальные анимации для мобильных */
   .track-left {
-    animation: scrollLeft 15s linear infinite;
+    animation: scrollDown 20s linear infinite;
   }
 
   .track-right {
-    animation: scrollRight 15s linear infinite;
+    animation: scrollUp 20s linear infinite;
   }
 
-  .brands-carousel {
-    border-radius: 10px;
-    padding: 15px 0;
-    margin: 20px 0;
+  @keyframes scrollDown {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+
+  @keyframes scrollUp {
+    0% {
+      transform: translateY(-50%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .brands-slide img:hover {
+    transform: scale(1.1);
+    animation: borderGlow 2s infinite;
   }
 }
 
-/* Для очень маленьких экранов */
 @media screen and (max-width: 480px) {
-  .brands-slide img {
-    height: 30px; /* Еще меньше размер для маленьких экранов */
-  }
-
-  .brands-slide {
-    gap: 15px; /* Уменьшаем отступы между логотипами */
+  .brands-carousel {
+    padding: 10px;
+    gap: 15px;
   }
 
   .brands-row {
-    padding: 8px 0;
+    height: 250px;
   }
 
-  /* Еще быстрее анимация */
-  .track-left {
-    animation: scrollLeft 12s linear infinite;
+  .brands-slide img {
+    max-width: 60px;
   }
+}
 
-  .track-right {
-    animation: scrollRight 12s linear infinite;
-  }
-
-  .brands-carousel {
-    border-radius: 8px;
-    padding: 10px 0;
-    margin: 15px 0;
-  }
-
-  h1 {
-    font-size: 24px;
-  }
+/* Общие стили для эффекта паузы */
+.brands-track:hover {
+  animation-play-state: paused;
 }
 
 .cta-container {
