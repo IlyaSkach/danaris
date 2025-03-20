@@ -1,3 +1,27 @@
+// Базовые вопросы для кнопки "Подобрать оборудование"
+const defaultQuestions = [
+  {
+    text: "Какой тип компрессора вас интересует?",
+    options: ["Винтовой", "Поршневой", "Спиральный", "Не знаю"],
+  },
+  {
+    text: "Какая производительность вам необходима?",
+    options: ["До 500 л/мин", "500-1000 л/мин", "Более 1000 л/мин", "Не знаю"],
+  },
+  {
+    text: "Для каких целей нужен компрессор?",
+    options: [
+      "Промышленное производство",
+      "Строительство",
+      "Сервис и ремонт",
+      "Другое",
+    ],
+  },
+];
+
+// Копия вопросов для изменения при клике на бренд
+let questions = [...defaultQuestions];
+
 document.addEventListener("DOMContentLoaded", () => {
   // Здесь будет основная логика приложения
   console.log("Приложение загружено");
@@ -32,19 +56,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   brandImages.forEach((img) => {
     img.addEventListener("click", function () {
-      // Получаем название бренда из alt атрибута
       const brandName = this.alt;
 
-      // Обновляем первый вопрос в квизе
-      questions[0] = {
-        text: `Вас интересует оборудование ${brandName}?`,
-        options: ["Да", "Нет, другой производитель", "Нужна консультация"],
-      };
+      // Создаем новый массив вопросов для бренда
+      questions = [
+        {
+          text: `Вас интересует оборудование ${brandName}?`,
+          options: ["Да", "Нет, другой производитель", "Нужна консультация"],
+        },
+        ...defaultQuestions.slice(1), // Добавляем остальные вопросы из базового набора
+      ];
 
-      // Открываем модальное окно с квизом
+      currentQuestion = 1;
       openQuizModal();
     });
   });
+
+  // Добавляем обработчик для кнопки "Подобрать оборудование"
+  const ctaButton = document.querySelector(".cta-button");
+  if (ctaButton) {
+    ctaButton.addEventListener("click", function () {
+      // Возвращаем исходные вопросы
+      questions = [...defaultQuestions];
+      currentQuestion = 1;
+      openQuizModal();
+    });
+  }
+
+  // Закрытие модального окна по клику вне его области
+  window.onclick = function (event) {
+    const modal = document.getElementById("quizModal");
+    if (event.target == modal) {
+      closeQuizModal();
+    }
+  };
 });
 
 // Обновляем функцию startQuiz

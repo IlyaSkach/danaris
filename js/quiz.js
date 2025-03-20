@@ -1,5 +1,5 @@
-// Конфигурация вопросов
-const questions = [
+// Базовые вопросы для кнопки "Подобрать оборудование"
+const defaultQuestions = [
   {
     text: "Какой тип компрессора вас интересует?",
     options: ["Винтовой", "Поршневой", "Спиральный", "Не знаю"],
@@ -19,24 +19,22 @@ const questions = [
   },
 ];
 
+let questions = [...defaultQuestions];
 let currentQuestion = 1;
-const totalQuestions = questions.length;
+let totalQuestions = defaultQuestions.length;
 
 function openQuizModal() {
-  const modal = document.getElementById("quizModal");
-  modal.style.display = "block";
-  document.body.classList.add("modal-open");
+  document.getElementById("quizModal").style.display = "block";
+  document.body.style.overflow = "hidden";
   startQuiz();
 }
 
 function closeQuizModal() {
-  const modal = document.getElementById("quizModal");
-  modal.style.display = "none";
-  document.body.classList.remove("modal-open");
+  document.getElementById("quizModal").style.display = "none";
+  document.body.style.overflow = "auto";
   // Сброс квиза
   currentQuestion = 1;
   document.querySelector(".chat").innerHTML = "";
-  document.querySelector(".progress").style.width = "0%";
   document.querySelector(".welcome-text").style.display = "block";
 }
 
@@ -53,26 +51,26 @@ window.onclick = function (event) {
 };
 
 function startQuiz() {
-  const nextQuestionData = questions[0];
   const chat = document.querySelector(".chat");
+  chat.innerHTML = ""; // Очищаем чат при старте
 
   setTimeout(() => {
     const questionElement = document.createElement("div");
     questionElement.classList.add("chat-message", "operator");
     questionElement.innerHTML = `
-      <div class="avatar operator-avatar">
-        <img src="./images/olga.gif" alt="avatar">
-      </div>
-      <div class="message">${nextQuestionData.text}</div>
-      <div class="options">
-        ${nextQuestionData.options
-          .map(
-            (option) =>
-              `<button class="option" onclick="nextQuestion(1, '${option}')">${option}</button>`
-          )
-          .join("")}
-      </div>
-    `;
+            <div class="avatar operator-avatar">
+                <img src="./images/olga.gif" alt="avatar">
+            </div>
+            <div class="message">${questions[0].text}</div>
+            <div class="options">
+                ${questions[0].options
+                  .map(
+                    (option) =>
+                      `<button class="option" onclick="nextQuestion(1, '${option}')">${option}</button>`
+                  )
+                  .join("")}
+            </div>
+        `;
     chat.appendChild(questionElement);
   }, 1000);
 }
@@ -91,32 +89,29 @@ function nextQuestion(questionNumber, userAnswer) {
   const userAnswerMessage = document.createElement("div");
   userAnswerMessage.classList.add("chat-message", "user-answer");
   userAnswerMessage.innerHTML = `
-    <div class="message">${userAnswer}</div>
-  `;
+       
+        <div class="message">${userAnswer}</div>
+    `;
   document.querySelector(".chat").appendChild(userAnswerMessage);
-
-  // Автоскролл после ответа пользователя
-  const chatContainer = document.querySelector("main");
-  chatContainer.scrollTop = chatContainer.scrollHeight;
 
   // Показываем "печатает..."
   const typingMessage = document.createElement("div");
-  typingMessage.classList.add("chat-message", "operator", "typing-message");
+  typingMessage.classList.add("chat-message", "operator");
   typingMessage.innerHTML = `
-    <div class="avatar operator-avatar">
-      <img src="./images/olga.gif" alt="avatar">
-    </div>
-    <div class="message typing">
-      Оля печатает<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
-    </div>
-  `;
+        <div class="avatar operator-avatar">
+            <img src="./images/olga.gif" alt="avatar">
+        </div>
+        <div class="message typing">
+            Оля печатает<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+        </div>
+    `;
   document.querySelector(".chat").appendChild(typingMessage);
 
-  // Автоскролл после добавления "печатает..."
+  // Скролл вниз
+  const chatContainer = document.querySelector("main");
   chatContainer.scrollTop = chatContainer.scrollHeight;
 
   setTimeout(() => {
-    // Удаляем сообщение "печатает..."
     typingMessage.remove();
 
     if (currentQuestion < totalQuestions) {
@@ -124,54 +119,44 @@ function nextQuestion(questionNumber, userAnswer) {
       const nextQuestionElement = document.createElement("div");
       nextQuestionElement.classList.add("chat-message", "operator");
       nextQuestionElement.innerHTML = `
-        <div class="avatar operator-avatar">
-          <img src="./Images/olga.gif" alt="avatar">
-        </div>
-        <div class="message">${nextQuestionData.text}</div>
-        <div class="options">
-          ${nextQuestionData.options
-            .map(
-              (option) =>
-                `<button class="option" onclick="nextQuestion(${
-                  currentQuestion + 1
-                }, '${option}')">${option}</button>`
-            )
-            .join("")}
-        </div>
-      `;
+                <div class="avatar operator-avatar">
+                    <img src="./images/olga.gif" alt="avatar">
+                </div>
+                <div class="message">${nextQuestionData.text}</div>
+                <div class="options">
+                    ${nextQuestionData.options
+                      .map(
+                        (option) =>
+                          `<button class="option" onclick="nextQuestion(${
+                            currentQuestion + 1
+                          }, '${option}')">${option}</button>`
+                      )
+                      .join("")}
+                </div>
+            `;
       document.querySelector(".chat").appendChild(nextQuestionElement);
       currentQuestion++;
-
-      // Автоскролл после добавления нового вопроса
-      chatContainer.scrollTop = chatContainer.scrollHeight;
     } else {
       // Форма для контактных данных
       const formElement = document.createElement("div");
       formElement.classList.add("chat-message", "operator");
       formElement.innerHTML = `
-        <div class="avatar operator-avatar">
-          <img src="./images/olga.gif" alt="avatar">
-        </div>
-        <div class="message">
-          <p>Введите Ваше имя:</p>
-          <input type="text" id="user-name" placeholder="Ваше имя">
-          <p>Введите Ваш телефон:</p>
-          <input type="tel" id="user-phone" placeholder="+7 (999) 999-99-99" maxlength="18" oninput="formatPhoneNumber(this)">
-          <button class="submit-button" onclick="submitForm()">Отправить</button>
-        </div>
-      `;
+                <div class="avatar operator-avatar">
+                    <img src="./images/olga.gif" alt="avatar">
+                </div>
+                <div class="message">
+                    <p>Введите Ваше имя:</p>
+                    <input type="text" id="user-name" placeholder="Ваше имя">
+                    <p>Введите Ваш телефон:</p>
+                    <input type="tel" id="user-phone" placeholder="+7 (999) 999-99-99" maxlength="18" oninput="formatPhoneNumber(this)">
+                    <button class="submit-button" onclick="submitForm()">Отправить</button>
+                </div>
+            `;
       document.querySelector(".chat").appendChild(formElement);
-
-      // Автоскролл после добавления формы
-      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    // Обновляем прогресс-бар
-    const progress = (currentQuestion / totalQuestions) * 100;
-    document.querySelector(".progress").style.width = `${progress}%`;
-
     // Скролл вниз
-    window.scrollTo(0, document.body.scrollHeight);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
   }, 1500);
 }
 
@@ -253,3 +238,34 @@ function closePopup() {
     popup.style.display = "none";
   }, 300); // Время должно совпадать с длительностью transition в CSS
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Обработчик для кнопки
+  const ctaButton = document.querySelector(".cta-button");
+  if (ctaButton) {
+    ctaButton.addEventListener("click", function () {
+      questions = [...defaultQuestions];
+      totalQuestions = defaultQuestions.length;
+      currentQuestion = 1;
+      openQuizModal();
+    });
+  }
+
+  // Обработчики для логотипов
+  const brandImages = document.querySelectorAll(".brands-slide img");
+  brandImages.forEach((img) => {
+    img.addEventListener("click", function () {
+      const brandName = this.alt;
+      questions = [
+        {
+          text: `Вас интересует оборудование ${brandName}?`,
+          options: ["Да", "Нет, другой производитель", "Нужна консультация"],
+        },
+        ...defaultQuestions,
+      ];
+      totalQuestions = questions.length;
+      currentQuestion = 1;
+      openQuizModal();
+    });
+  });
+});
