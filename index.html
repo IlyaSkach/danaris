@@ -9,6 +9,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="./styles/style.css">
+	<link rel="stylesheet" href="./styles/modal.css">
 </head>
 
 <body>
@@ -54,9 +55,49 @@
 				</div>
 			</div>
 		</div>
+		<div class="cta-container">
+			<button class="cta-button" onclick="openQuizModal()">
+				<span class="button-text">Подобрать оборудование</span>
+				<span class="button-icon">→</span>
+			</button>
+		</div>
+	</div>
+
+	<!-- Модальное окно (должно быть вне .container) -->
+	<div id="quizModal" class="modal">
+		<div class="modal-content">
+			<span class="close-modal" onclick="closeQuizModal()">&times;</span>
+			<div class="quiz-container">
+				<div class="header-block">
+					<div class="sidebar">
+						<!-- <div class="avatar operator-avatar">
+							<img src="./images/olga.gif" alt="avatar">
+						</div> -->
+					</div>
+					<div class="progress-bar">
+						<div class="progress"></div>
+					</div>
+					<div class="welcome-text">
+						Здравствуйте! Я помогу подобрать оборудование
+					</div>
+				</div>
+				<main>
+					<div class="chat"></div>
+				</main>
+			</div>
+		</div>
+	</div>
+
+	<!-- Добавьте перед закрывающим тегом body -->
+	<div id="popup" class="popup">
+		<div class="popup-content">
+			<span class="close-button" onclick="closePopup()">&times;</span>
+			<p id="popup-message"></p>
+		</div>
 	</div>
 
 	<script src="./js/script.js"></script>
+	<script src="./js/quiz.js"></script>
 </body>
 
 </html>
