@@ -1,5 +1,5 @@
 // Базовые вопросы для кнопки "Подобрать оборудование"
-const defaultQuestions = [
+export const defaultQuestions = [
   {
     text: "Какой тип компрессора вас интересует?",
     options: ["Винтовой", "Поршневой", "Спиральный", "Не знаю"],
@@ -19,17 +19,41 @@ const defaultQuestions = [
   },
 ];
 
-let questions = [...defaultQuestions];
-let currentQuestion = 1;
-let totalQuestions = defaultQuestions.length;
+// Создаем объект для хранения состояния
+export const quizState = {
+  questions: [...defaultQuestions],
+  currentQuestion: 1,
+  totalQuestions: defaultQuestions.length,
+};
 
-function openQuizModal() {
+// Экспортируем геттеры и сеттеры для работы с состоянием
+export function getQuestions() {
+  return quizState.questions;
+}
+export function setQuestions(newQuestions) {
+  quizState.questions = newQuestions;
+}
+export function getCurrentQuestion() {
+  return quizState.currentQuestion;
+}
+export function setCurrentQuestion(value) {
+  quizState.currentQuestion = value;
+}
+export function getTotalQuestions() {
+  return quizState.totalQuestions;
+}
+export function setTotalQuestions(value) {
+  quizState.totalQuestions = value;
+}
+
+export function openQuizModal() {
+  console.log("openQuizModal вызван");
   document.getElementById("quizModal").style.display = "block";
-  document.body.style.overflow = "hidden";
+  document.body.style.overflow = "auto"; // Не блокируем прокрутку страницы
   startQuiz();
 }
 
-function closeQuizModal() {
+export function closeQuizModal() {
   document.getElementById("quizModal").style.display = "none";
   document.body.style.overflow = "auto";
   // Сброс квиза
@@ -50,7 +74,8 @@ window.onclick = function (event) {
   }
 };
 
-function startQuiz() {
+export function startQuiz() {
+  console.log("startQuiz вызван");
   const chat = document.querySelector(".chat");
   chat.innerHTML = ""; // Очищаем чат при старте
 
@@ -61,27 +86,38 @@ function startQuiz() {
             <div class="avatar operator-avatar">
                 <img src="./images/olga.gif" alt="avatar">
             </div>
-            <div class="message">${questions[0].text}</div>
+            <div class="message">${getQuestions()[0].text}</div>
             <div class="options">
-                ${questions[0].options
-                  .map(
-                    (option) =>
-                      `<button class="option" onclick="nextQuestion(1, '${option}')">${option}</button>`
+                ${getQuestions()[0]
+                  .options.map(
+                    (option, index) =>
+                      `<button class="option" data-question="1" data-option="${option}">${option}</button>`
                   )
                   .join("")}
             </div>
         `;
     chat.appendChild(questionElement);
+
+    // Добавляем обработчики для кнопок
+    const optionButtons = questionElement.querySelectorAll(".option");
+    optionButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const questionNumber = parseInt(button.dataset.question);
+        const option = button.dataset.option;
+        nextQuestion(questionNumber, option);
+      });
+    });
   }, 1000);
 }
 
-function nextQuestion(questionNumber, userAnswer) {
-  if (questionNumber !== currentQuestion) {
+export function nextQuestion(questionNumber, userAnswer) {
+  console.log("nextQuestion вызван", questionNumber, userAnswer);
+  if (questionNumber !== getCurrentQuestion()) {
     return;
   }
 
   // Скрываем текст приветствия после ответа на первый вопрос
-  if (currentQuestion === 1) {
+  if (getCurrentQuestion() === 1) {
     document.querySelector(".welcome-text").style.display = "none";
   }
 
@@ -89,7 +125,6 @@ function nextQuestion(questionNumber, userAnswer) {
   const userAnswerMessage = document.createElement("div");
   userAnswerMessage.classList.add("chat-message", "user-answer");
   userAnswerMessage.innerHTML = `
-       
         <div class="message">${userAnswer}</div>
     `;
   document.querySelector(".chat").appendChild(userAnswerMessage);
@@ -114,8 +149,8 @@ function nextQuestion(questionNumber, userAnswer) {
   setTimeout(() => {
     typingMessage.remove();
 
-    if (currentQuestion < totalQuestions) {
-      const nextQuestionData = questions[currentQuestion];
+    if (getCurrentQuestion() < getTotalQuestions()) {
+      const nextQuestionData = getQuestions()[getCurrentQuestion()];
       const nextQuestionElement = document.createElement("div");
       nextQuestionElement.classList.add("chat-message", "operator");
       nextQuestionElement.innerHTML = `
@@ -127,15 +162,26 @@ function nextQuestion(questionNumber, userAnswer) {
                     ${nextQuestionData.options
                       .map(
                         (option) =>
-                          `<button class="option" onclick="nextQuestion(${
-                            currentQuestion + 1
-                          }, '${option}')">${option}</button>`
+                          `<button class="option" data-question="${
+                            getCurrentQuestion() + 1
+                          }" data-option="${option}">${option}</button>`
                       )
                       .join("")}
                 </div>
             `;
       document.querySelector(".chat").appendChild(nextQuestionElement);
-      currentQuestion++;
+
+      // Добавляем обработчики для кнопок
+      const optionButtons = nextQuestionElement.querySelectorAll(".option");
+      optionButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const questionNumber = parseInt(button.dataset.question);
+          const option = button.dataset.option;
+          nextQuestion(questionNumber, option);
+        });
+      });
+
+      setCurrentQuestion(getCurrentQuestion() + 1);
     } else {
       // Форма для контактных данных
       const formElement = document.createElement("div");
@@ -148,11 +194,18 @@ function nextQuestion(questionNumber, userAnswer) {
                     <p>Введите Ваше имя:</p>
                     <input type="text" id="user-name" placeholder="Ваше имя">
                     <p>Введите Ваш телефон:</p>
-                    <input type="tel" id="user-phone" placeholder="+7 (999) 999-99-99" maxlength="18" oninput="formatPhoneNumber(this)">
-                    <button class="submit-button" onclick="submitForm()">Отправить</button>
+                    <input type="tel" id="user-phone" placeholder="+7 (999) 999-99-99" maxlength="18">
+                    <button class="submit-button">Отправить</button>
                 </div>
             `;
       document.querySelector(".chat").appendChild(formElement);
+
+      // Добавляем обработчики для формы
+      const phoneInput = formElement.querySelector("#user-phone");
+      const submitButton = formElement.querySelector(".submit-button");
+
+      phoneInput.addEventListener("input", (e) => formatPhoneNumber(e.target));
+      submitButton.addEventListener("click", submitForm);
     }
 
     // Скролл вниз
@@ -160,7 +213,7 @@ function nextQuestion(questionNumber, userAnswer) {
   }, 1500);
 }
 
-function formatPhoneNumber(input) {
+export function formatPhoneNumber(input) {
   let value = input.value.replace(/\D/g, "");
   if (value.startsWith("7")) {
     value = value.slice(1);
@@ -190,7 +243,7 @@ function formatPhoneNumber(input) {
   input.value = formattedValue.slice(0, 18);
 }
 
-function submitForm() {
+export function submitForm() {
   const name = document.getElementById("user-name").value;
   const phone = document.getElementById("user-phone").value;
   const phonePattern = /^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/;
@@ -221,7 +274,7 @@ function submitForm() {
   setTimeout(closeQuizModal, 3000);
 }
 
-function showPopup(message) {
+export function showPopup(message) {
   const popup = document.getElementById("popup");
   document.getElementById("popup-message").textContent = message;
   popup.style.display = "flex";
@@ -231,7 +284,7 @@ function showPopup(message) {
   }, 10);
 }
 
-function closePopup() {
+export function closePopup() {
   const popup = document.getElementById("popup");
   popup.classList.remove("show");
   setTimeout(() => {
@@ -240,6 +293,18 @@ function closePopup() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Обработчик для кнопки закрытия квиза
+  const closeModalButton = document.querySelector(".close-modal");
+  if (closeModalButton) {
+    closeModalButton.addEventListener("click", closeQuizModal);
+  }
+
+  // Обработчик для кнопки закрытия попапа
+  const closePopupButton = document.querySelector(".close-button");
+  if (closePopupButton) {
+    closePopupButton.addEventListener("click", closePopup);
+  }
+
   // Обработчик для кнопки
   const ctaButton = document.querySelector(".cta-button");
   if (ctaButton) {

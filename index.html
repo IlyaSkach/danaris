@@ -4,83 +4,178 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Компрессор</title>
+	<title>Danaris</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="./styles/style.css">
-	<link rel="stylesheet" href="./styles/modal.css">
+	<link rel="stylesheet" href="styles/style.css">
+	<link rel="stylesheet" href="styles/modal.css">
 </head>
 
 <body>
-	<div class="container">
-		<h1>Наши бренды</h1>
-		<div class="brands-carousel">
-			<div class="brands-row">
-				<div class="brands-track track-left">
-					<div class="brands-slide">
-						<img src="images/b1.png" alt="CompAir" title="Нажмите, чтобы узнать подробнее">
-						<img src="images/b2.jpg" alt="MANN+HUMMEL" title="Нажмите, чтобы узнать подробнее">
-						<img src="images/b3.png" alt="KAESER" title="Нажмите, чтобы узнать подробнее">
-						<img src="images/b4.png" alt="Тут будет название бренда" title="Нажмите, чтобы узнать подробнее">
-						<img src="images/b5.png" alt="Тут будет название бренда" title="Нажмите, чтобы узнать подробнее">
-					</div>
-					<div class="brands-slide">
-						<img src="images/b1.png" alt="Тут будет название бренда">
-						<img src="images/b2.jpg" alt="Тут будет название бренда">
-						<img src="images/b3.png" alt="Тут будет название бренда">
-						<img src="images/b4.png" alt="Тут будет название бренда">
-						<img src="images/b5.png" alt="Тут будет название бренда">
-					</div>
-				</div>
-			</div>
-			<div class="brands-row">
-				<div class="brands-track track-right">
-					<div class="brands-slide">
-						<img src="images/b6.png" alt="Бренд 6">
-						<img src="images/b7.jpg" alt="Бренд 7">
-						<img src="images/b8.png" alt="Бренд 8">
-						<img src="images/b9.png" alt="Бренд 9">
-						<img src="images/b10.png" alt="Бренд 10">
-						<img src="images/b11.png" alt="Бренд 11">
-					</div>
-					<div class="brands-slide">
-						<img src="images/b6.png" alt="Бренд 6">
-						<img src="images/b7.jpg" alt="Бренд 7">
-						<img src="images/b8.png" alt="Бренд 8">
-						<img src="images/b9.png" alt="Бренд 9">
-						<img src="images/b10.png" alt="Бренд 10">
-						<img src="images/b11.png" alt="Бренд 11">
-					</div>
-				</div>
+	<!-- Hero-блок с логотипом, слоганом и иконками соцсетей -->
+	<section class="hero">
+		<div class="hero-content">
+			<img src="Images/logo.png" alt="Danaris Logo" class="logo">
+			<h1 class="slogan">Эффективность, воплощённая в воздухе</h1>
+			<div class="social-icons">
+				<a href="https://t.me/danaris" target="_blank" class="social-icon telegram">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+						<path fill="currentColor"
+							d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+					</svg>
+				</a>
+				<a href="https://wa.me/79001234567" target="_blank" class="social-icon whatsapp">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+						<path fill="currentColor"
+							d="M12 0a12 12 0 1 1 0 24 12 12 0 0 1 0-24zm.14 4.5a7.34 7.34 0 0 0-6.46 10.82l.15.26L4.5 19.5l4.08-1.3a7.38 7.38 0 0 0 10.92-6.4c0-4.03-3.3-7.3-7.36-7.3zm0 1.16c3.41 0 6.19 2.76 6.19 6.15a6.17 6.17 0 0 1-9.37 5.27l-.23-.15-2.38.76.77-2.28-.15-.23a6.18 6.18 0 0 1 5.17-9.52zm-2.33 3.4c-.13 0-.32.04-.5.22-.17.17-.67.65-.67 1.59 0 .94.7 1.85.79 1.98.1.12 1.4 2.17 3.42 2.95 1.69.65 2.04.52 2.4.49.37-.04 1.19-.48 1.35-.95.17-.47.17-.87.12-.95-.05-.09-.19-.14-.4-.25l-1.48-.74c-.2-.1-.35-.15-.5.15-.14.3-.57.95-.7 1.14-.13.2-.26.22-.48.08a6.03 6.03 0 0 1-1.76-1.1 6.77 6.77 0 0 1-1.23-1.56c-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.4.11-.12.15-.21.22-.36.07-.14.04-.27-.02-.38-.06-.1-.52-1.29-.73-1.77-.19-.43-.38-.43-.52-.43h-.44z" />
+					</svg>
+				</a>
+				<a href="tel:+79001234567" class="social-icon phone">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+						<path fill="currentColor"
+							d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+					</svg>
+				</a>
+				<a href="mailto:info@danaris.ru" class="social-icon email">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+						<path fill="currentColor"
+							d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+					</svg>
+				</a>
 			</div>
 		</div>
-		<div class="cta-container">
-			<div>мой тг @SkIlyaA</div>
-			<button class="cta-button">
-				<span class="button-text">Подобрать оборудование</span>
-				<span class="button-icon">→</span>
-			</button>
+	</section>
+
+	<div class="container">
+		<h1>Наши бренды</h1>
+		<div class="brands-showcase">
+			<div class="brand-item" data-brand="abac">
+				<img src="Images/b16.png" alt="ABAC">
+				<h3>ABAC</h3>
+			</div>
+			<div class="brand-item" data-brand="aco">
+				<img src="Images/b23.png" alt="ACO">
+				<h3>ACO</h3>
+			</div>
+			<div class="brand-item" data-brand="aertzener">
+				<img src="Images/b30.png" alt="Aerzener">
+				<h3>Aerzener</h3>
+			</div>
+			<div class="brand-item" data-brand="airpol">
+				<img src="Images/b20.png" alt="Airpol">
+				<h3>Airpol</h3>
+			</div>
+			<div class="brand-item" data-brand="almig">
+				<img src="Images/b29.png" alt="Almig">
+				<h3>Almig</h3>
+			</div>
+			<div class="brand-item" data-brand="alup">
+				<img src="Images/b17.png" alt="Alup">
+				<h3>Alup</h3>
+			</div>
+			<div class="brand-item" data-brand="atmos">
+				<img src="Images/b12.png" alt="Atmos">
+				<h3>Atmos</h3>
+			</div>
+			<div class="brand-item" data-brand="atlascopco">
+				<img src="Images/b19.png" alt="Atlas Copco">
+				<h3>Atlas Copco</h3>
+			</div>
+			<div class="brand-item" data-brand="ats">
+				<img src="Images/b8.png" alt="ATS">
+				<h3>ATS</h3>
+			</div>
+			<div class="brand-item" data-brand="becker">
+				<img src="Images/b7.jpg" alt="Becker">
+				<h3>Becker</h3>
+			</div>
+			<div class="brand-item" data-brand="berger">
+				<img src="Images/b24.png" alt="Berger">
+				<h3>Berger</h3>
+			</div>
+			<div class="brand-item" data-brand="boge">
+				<img src="Images/b18.png" alt="Boge">
+				<h3>Boge</h3>
+			</div>
+			<div class="brand-item" data-brand="ceccato">
+				<img src="Images/b22.png" alt="Ceccato">
+				<h3>Ceccato</h3>
+			</div>
+			<div class="brand-item" data-brand="comaro">
+				<img src="Images/b25.png" alt="Comaro">
+				<h3>Comaro</h3>
+			</div>
+			<div class="brand-item" data-brand="compair">
+				<img src="Images/b4.png" alt="CompAir">
+				<h3>CompAir</h3>
+			</div>
+			<div class="brand-item" data-brand="comprag">
+				<img src="Images/b26.png" alt="Comprag">
+				<h3>Comprag</h3>
+			</div>
+			<div class="brand-item" data-brand="dali">
+				<img src="Images/b11.png" alt="Dali">
+				<h3>Dali</h3>
+			</div>
+			<div class="brand-item" data-brand="dalgakiran">
+				<img src="Images/b3.png" alt="Dalgakiran">
+				<h3>Dalgakiran</h3>
+			</div>
+			<div class="brand-item" data-brand="ekomak">
+				<img src="Images/b10.png" alt="EKOMAK">
+				<h3>EKOMAK</h3>
+			</div>
+			<div class="brand-item" data-brand="fiac">
+				<img src="Images/b27.png" alt="Fiac">
+				<h3>Fiac</h3>
+			</div>
+			<div class="brand-item" data-brand="fini">
+				<img src="Images/b28.png" alt="Fini">
+				<h3>Fini</h3>
+			</div>
+			<div class="brand-item" data-brand="ingersollrand">
+				<img src="Images/b21.png" alt="Ingersoll Rand">
+				<h3>Ingersoll Rand</h3>
+			</div>
+			<div class="brand-item" data-brand="kaeserkompressoren">
+				<img src="Images/b1.png" alt="Kaeser Kompressoren">
+				<h3>Kaeser Kompressoren</h3>
+			</div>
+			<div class="brand-item" data-brand="kraftmann">
+				<img src="Images/b2.jpg" alt="Kraftmann">
+				<h3>Kraftmann</h3>
+			</div>
+			<div class="brand-item" data-brand="mannhummel">
+				<img src="Images/b5.png" alt="Mann+Hummel">
+				<h3>Mann+Hummel</h3>
+			</div>
+			<div class="brand-item" data-brand="omi">
+				<img src="Images/b14.png" alt="OMI">
+				<h3>OMI</h3>
+			</div>
+			<div class="brand-item" data-brand="remeza">
+				<img src="Images/b15.png" alt="Remeza">
+				<h3>Remeza</h3>
+			</div>
+			<div class="brand-item" data-brand="sullair">
+				<img src="Images/b9.png" alt="Sullair">
+				<h3>Sullair</h3>
+			</div>
+			<div class="brand-item" data-brand="worthingtoncreyssensac">
+				<img src="Images/b6.png" alt="Worthington Creyssensac">
+				<h3>Worthington Creyssensac</h3>
+			</div>
 		</div>
 	</div>
 
-	<!-- Модальное окно (должно быть вне .container) -->
+	<!-- Модальное окно для квиза -->
 	<div id="quizModal" class="modal">
 		<div class="modal-content">
-			<span class="close-modal" onclick="closeQuizModal()">&times;</span>
+			<span class="close-modal">&times;</span>
 			<div class="quiz-container">
 				<div class="header-block">
-					<div class="sidebar">
-						<!-- <div class="avatar operator-avatar">
-							<img src="./images/olga.gif" alt="avatar">
-						</div> -->
-					</div>
-					<div class="progress-bar">
-						<div class="progress"></div>
-					</div>
-					<div class="welcome-text">
-						Здравствуйте! Я помогу подобрать оборудование
-					</div>
+					<div class="welcome-text">Подобрать оборудование</div>
 				</div>
 				<main>
 					<div class="chat"></div>
@@ -89,16 +184,19 @@
 		</div>
 	</div>
 
-	<!-- Добавьте перед закрывающим тегом body -->
+	<!-- Попап для сообщений -->
 	<div id="popup" class="popup">
 		<div class="popup-content">
-			<span class="close-button" onclick="closePopup()">&times;</span>
+			<span class="close-button">&times;</span>
 			<p id="popup-message"></p>
 		</div>
 	</div>
 
-	<script src="./js/quiz.js"></script>
-	<script src="./js/script.js"></script>
+	<script type="module" src="js/script.js"></script>
+	<script type="module" src="js/quiz.js"></script>
+	<script type="module" src="js/quiz-auto.js"></script>
 </body>
+
+</html>
 
 </html>
