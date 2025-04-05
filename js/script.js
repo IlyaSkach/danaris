@@ -15,33 +15,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // Обработчик для элементов брендов
   const brandItems = document.querySelectorAll(".brand-item");
   brandItems.forEach((item) => {
-    item.addEventListener("click", () => {
-      const brandName = item.querySelector("h3").textContent;
-      // Преобразуем название бренда в ключ
-      const brandKey = brandName
-        .toLowerCase()
-        .replace(/\+/g, "")
-        .replace(/\s+/g, "")
-        .replace(/[^a-zа-я0-9]/g, "");
+    const brandInfoButton = item.querySelector(".brand-info-button");
+    const orderButton = item.querySelector(".order-button");
+    const brandName = item.getAttribute("data-brand");
 
-      console.log("Brand Name:", brandName);
-      console.log("Brand Key:", brandKey);
-      console.log("Available brands:", Object.keys(brandsData));
+    if (brandInfoButton) {
+      brandInfoButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const brandData = brandsData[brandName];
+        if (brandData) {
+          openBrandModal(brandData);
+        }
+      });
+    }
 
-      const brandData = brandsData[brandKey];
-      console.log("Brand Data:", brandData);
-
-      if (brandData) {
-        openBrandModal(brandData);
-      } else {
-        openBrandModal({
-          name: brandName,
-          description: "Информация о бренде находится в разработке.",
-          features: [],
-          image: item.querySelector("img").src,
-        });
-      }
-    });
+    if (orderButton) {
+      orderButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openOrderModal(brandName);
+      });
+    }
   });
 
   // Добавляем плавную прокрутку для всех внутренних ссылок
@@ -60,113 +53,102 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Функция для открытия модального окна с информацией о бренде
 function openBrandModal(brandData) {
-  // Создаем модальное окно, если его еще нет
-  let brandModal = document.getElementById("brandModal");
-  if (!brandModal) {
-    brandModal = document.createElement("div");
-    brandModal.id = "brandModal";
-    brandModal.className = "modal";
-    brandModal.innerHTML = `
-      <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <div class="brand-info">
-          <h2 id="brandTitle"></h2>
-          <img id="brandImage" src="" alt="">
-          <div class="brand-description"></div>
-          <div class="brand-features"></div>
-          <div class="brand-form">
-            <div class="form-group">
-              <label for="brandName">Ваше имя</label>
-              <input type="text" id="brandName" placeholder="Введите ваше имя">
-            </div>
-            <div class="form-group">
-              <label for="brandPhone">Телефон</label>
-              <input type="tel" id="brandPhone" placeholder="+7 (___) ___-__-__">
-            </div>
-            <div class="form-group">
-              <label for="brandEmail">Email</label>
-              <input type="email" id="brandEmail" placeholder="Введите ваш email">
-            </div>
-            <div class="form-group">
-              <label for="brandMessage">Сообщение</label>
-              <textarea id="brandMessage" placeholder="Опишите, какое оборудование вас интересует"></textarea>
-            </div>
-            <button class="submit-button">Отправить</button>
-          </div>
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="brand-info">
+        <img src="${brandData.image}" alt="${
+    brandData.name
+  }" class="brand-logo">
+        <h2>${brandData.name}</h2>
+        <div class="brand-description">
+          <p>${brandData.description || "Описание бренда отсутствует"}</p>
+        </div>
+        <div class="brand-features">
+          <h3>Особенности:</h3>
+          <ul>
+            ${brandData.features
+              .map((feature) => `<li>${feature}</li>`)
+              .join("")}
+          </ul>
         </div>
       </div>
-    `;
-    document.body.appendChild(brandModal);
+    </div>
+  `;
 
-    // Добавляем обработчик для крестика
-    const closeBtn = brandModal.querySelector(".close-modal");
-    closeBtn.addEventListener("click", () => closeBrandModal());
+  document.body.appendChild(modal);
+  modal.style.display = "block";
 
-    // Добавляем обработчик для кнопки отправки
-    const submitBtn = brandModal.querySelector(".submit-button");
-    submitBtn.addEventListener("click", () => submitBrandForm());
+  const closeBtn = modal.querySelector(".close");
+  closeBtn.onclick = function () {
+    modal.remove();
+  };
 
-    // Закрытие модального окна при клике вне его области
-    brandModal.addEventListener("click", (e) => {
-      if (e.target === brandModal) {
-        closeBrandModal();
-      }
-    });
-  }
-
-  // Заполняем данные о бренде
-  document.getElementById("brandTitle").textContent = brandData.name;
-  document.getElementById("brandImage").src = brandData.image;
-  document.getElementById("brandImage").alt = brandData.name;
-
-  const descriptionElement = brandModal.querySelector(".brand-description");
-  descriptionElement.innerHTML = `<p>${brandData.description}</p>`;
-
-  const featuresElement = brandModal.querySelector(".brand-features");
-  if (brandData.features && brandData.features.length > 0) {
-    featuresElement.innerHTML = `
-      <h3>Особенности и преимущества:</h3>
-      <ul>
-        ${brandData.features.map((feature) => `<li>${feature}</li>`).join("")}
-      </ul>
-    `;
-  } else {
-    featuresElement.innerHTML = "";
-  }
-
-  // Показываем модальное окно
-  brandModal.style.display = "block";
-  document.body.style.overflow = "hidden";
+  window.onclick = function (event) {
+    if (event.target === modal) {
+      modal.remove();
+    }
+  };
 }
 
-// Функция для закрытия модального окна
-function closeBrandModal() {
-  const brandModal = document.getElementById("brandModal");
-  if (brandModal) {
-    brandModal.style.display = "none";
-    document.body.style.overflow = "auto";
-  }
-}
+function openOrderModal(brandName) {
+  const brandItem = document.querySelector(`[data-brand="${brandName}"]`);
+  const brandImage = brandItem ? brandItem.querySelector("img").src : "";
 
-// Функция для отправки формы
-function submitBrandForm() {
-  const name = document.getElementById("brandName").value;
-  const phone = document.getElementById("brandPhone").value;
-  const email = document.getElementById("brandEmail").value;
-  const message = document.getElementById("brandMessage").value;
-  const brandName = document.getElementById("brandTitle").textContent;
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="order-form">
+        <div class="brand-image">
+          <img src="${brandImage}" alt="${brandName}">
+        </div>
+        <h2>Заказать оборудование ${brandName}</h2>
+        <form id="orderForm">
+          <div class="form-group">
+            <label for="name">Ваше имя:</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Сообщение:</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+          </div>
+          <button type="submit" class="submit-button">Отправить заявку</button>
+        </form>
+      </div>
+    </div>
+  `;
 
-  if (name && phone) {
-    console.log("Форма отправлена:", {
-      name,
-      phone,
-      email,
-      message,
-      brandName,
-    });
-    closeBrandModal();
-    alert("Спасибо! Мы свяжемся с вами в ближайшее время.");
-  } else {
-    alert("Пожалуйста, заполните имя и телефон");
-  }
+  document.body.appendChild(modal);
+  modal.style.display = "block";
+
+  const closeBtn = modal.querySelector(".close");
+  closeBtn.onclick = function () {
+    modal.remove();
+  };
+
+  window.onclick = function (event) {
+    if (event.target === modal) {
+      modal.remove();
+    }
+  };
+
+  const form = modal.querySelector("#orderForm");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    // Здесь можно добавить логику отправки формы
+    alert("Спасибо за заявку! Мы свяжемся с вами в ближайшее время.");
+    modal.remove();
+  });
 }
